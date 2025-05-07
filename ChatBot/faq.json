@@ -1,0 +1,15 @@
+{
+  "smartphones": {
+    "specs": "Our latest smartphones have 6.7-inch AMOLED displays, Snapdragon 8 Gen 2 processors, and 5000mAh batteries.",
+    "warranty": "Smartphones come with a 1-year manufacturer warranty covering hardware defects."
+  },
+  "laptops": {
+    "specs": "Our laptops feature Intel i7 12th Gen CPUs, 16GB RAM, and 1TB SSD for powerful performance.",
+    "warranty": "Laptops come with a 1-year onsite service warranty."
+  },
+  "orders": {
+    "tracking": "To track your order, go to 'My Orders' on our website and enter your Order ID.",
+    "return_policy": "You can return products within 10 days of delivery if they meet our return criteria.",
+    "payment_methods": "We accept credit/debit cards, UPI, net banking, and EMI options."
+  }
+}
