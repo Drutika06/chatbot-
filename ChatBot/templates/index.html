@@ -1,37 +1,69 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>INCREFF Chatbot</title>
+    <title>Chatbot</title>
     <style>
         body { font-family: Arial; padding: 20px; background: #f7f7f7; }
         #chatbox { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px #ccc; }
         .msg { margin-bottom: 10px; }
         .user { color: blue; }
         .bot { color: green; }
+        #message { width: 80%; padding: 8px; margin-bottom: 10px; }
+        button { padding: 8px 15px; background-color: #4CAF50; color: white; border: none; cursor: pointer; }
+        button:disabled { background-color: #ddd; cursor: not-allowed; }
+        .loading { color: #888; font-style: italic; }
     </style>
 </head>
 <body>
     <div id="chatbox">
-        <h2>INCREFF AI Chatbot</h2>
+        <h2> AI Chatbot</h2>
         <div id="chatlog"></div>
         <input type="text" id="message" placeholder="Ask your question..." style="width: 80%;">
-        <button onclick="sendMessage()">Send</button>
+        <button id="sendBtn" onclick="sendMessage()" disabled>Send</button>
     </div>
 
     <script>
+        // Enable the Send button if there is input
+        document.getElementById("message").addEventListener("input", function() {
+            const message = document.getElementById("message").value;
+            document.getElementById("sendBtn").disabled = !message.trim();
+        });
+
         async function sendMessage() {
             const msg = document.getElementById("message").value;
             if (!msg) return;
+
+            // Show user's message
             document.getElementById("chatlog").innerHTML += `<div class='msg user'><b>You:</b> ${msg}</div>`;
             document.getElementById("message").value = "";
+            document.getElementById("sendBtn").disabled = true; 
 
+            // Show loading indicator for bot
+            document.getElementById("chatlog").innerHTML += `<div class='msg loading'><i>Bot is typing...</i></div>`;
+            scrollToBottom();
+
+            // Send message to the server and get the response
             const response = await fetch("/chat", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ message: msg })
             });
+
             const data = await response.json();
+
+            // Remove the loading indicator
+            const loadingMsg = document.querySelector(".loading");
+            if (loadingMsg) loadingMsg.remove();
+
+            // Show bot's response
             document.getElementById("chatlog").innerHTML += `<div class='msg bot'><b>Bot:</b> ${data.response}</div>`;
+            scrollToBottom();
+        }
+
+        // Scroll chat log to the bottom
+        function scrollToBottom() {
+            const chatlog = document.getElementById("chatlog");
+            chatlog.scrollTop = chatlog.scrollHeight;
         }
     </script>
 </body>
