@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>INCREFF Chatbot</title>
+    <style>
+        body { font-family: Arial; padding: 20px; background: #f7f7f7; }
+        #chatbox { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px #ccc; }
+        .msg { margin-bottom: 10px; }
+        .user { color: blue; }
+        .bot { color: green; }
+    </style>
+</head>
+<body>
+    <div id="chatbox">
+        <h2>INCREFF AI Chatbot</h2>
+        <div id="chatlog"></div>
+        <input type="text" id="message" placeholder="Ask your question..." style="width: 80%;">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+
+    <script>
+        async function sendMessage() {
+            const msg = document.getElementById("message").value;
+            if (!msg) return;
+            document.getElementById("chatlog").innerHTML += `<div class='msg user'><b>You:</b> ${msg}</div>`;
+            document.getElementById("message").value = "";
+
+            const response = await fetch("/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: msg })
+            });
+            const data = await response.json();
+            document.getElementById("chatlog").innerHTML += `<div class='msg bot'><b>Bot:</b> ${data.response}</div>`;
+        }
+    </script>
+</body>
+</html>
